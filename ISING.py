@@ -44,7 +44,6 @@ def metropolis(spin_arr, times, beta, energia):
         E_i = 0
         E_f = 0
         
-        # Calculate energy based on neighboring spins
         E_i += -spin_i * spin_arr[(x-1) % N, y]
         E_f += -spin_f * spin_arr[(x-1) % N, y]
         E_i += -spin_i * spin_arr[(x+1) % N, y]
