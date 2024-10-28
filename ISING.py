@@ -26,6 +26,8 @@ def energia(array_spins):
     kern = np.array([[0, 1, 0], [1, 0, 1], [0, 1, 0]])
     arr = -array_spins * convolve(array_spins, kern, mode='wrap')
     return arr.sum()
+def EPredicha(N, T):
+    return -N*np.tanh(1/T)
 
 @njit
 def metropolis(spin_arr, times, beta, energia):
@@ -107,6 +109,20 @@ plt.xlabel('Temperatura')
 plt.ylabel('Energía promedio')
 plt.grid()
 plt.show()
+
+# Energía (Metropolis vs Predicción)
+
+
+EnergiasPredichas = EPredicha(N, temperaturas)
+plt.figure()
+plt.plot(temperaturas, energiaspromedio, marker='o', label = 'Metropolis')
+plt.plot(temperaturas, EnergiasPredichas, marker='.', label = 'Predicho')
+plt.title('Energía promedio vs Temperatura')
+plt.xlabel('Temperatura')
+plt.ylabel('Energía promedio')
+plt.grid()
+plt.show()
+
 
 # Mag vs Temp
 plt.figure()
