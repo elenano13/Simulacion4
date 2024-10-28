@@ -1,0 +1,64 @@
+#Simulacion 4 - Mecánica Estadística
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parámetros iniciales
+N = 50 
+J = 1   # Energía de intercambio en unidades tales que J/kB = 1
+B = 0   # Campo magnético externo, cero en este caso
+T = 1.0 # Temperatura
+steps = 1000  # Número de pasos de tiempo
+
+# energía de la configuración actual
+def calculate_energy(spins):
+    energy = 0
+    for i in range(N):
+        energy -= J * spins[i] * spins[(i + 1) % N]
+    return energy
+
+# magnetización de la configuración actual
+def calculate_magnetization(spins):
+    return np.sum(spins)
+
+# Inicializar configuración aleatoria de espines
+np.random.seed(0)
+spins = np.random.choice([-1, 1], size=N)
+
+# Listas para almacenar los valores 
+energy_time = []
+magnetization_time = []
+
+# Algoritmo de Metropolis
+for step in range(steps):
+    i = np.random.randint(0, N)
+    delta_E = 2 * J * spins[i] * (spins[(i - 1) % N] + spins[(i + 1) % N])
+
+    # Condición de aceptación de Metropolis
+    if delta_E < 0 or np.random.rand() < np.exp(-delta_E / T):
+        spins[i] *= -1  # Invertir el espín
+    # energía y magnetización actuales
+    energy = calculate_energy(spins)
+    magnetization = calculate_magnetization(spins)
+    energy_time.append(energy)
+    magnetization_time.append(magnetization)
+
+
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
+ax1.plot(energy_time, label="Energía Instantánea")
+ax1.set_title("Energía Instantánea vs Tiempo")
+ax1.set_xlabel("Tiempo (pasos)")
+ax1.set_ylabel("Energía")
+ax1.legend()
+ax1.grid()
+
+
+ax2.plot(magnetization_time, label="Magnetización Instantánea", color="orange")
+ax2.set_title("Magnetización Instantánea vs Tiempo")
+ax2.set_xlabel("Tiempo (pasos)")
+ax2.set_ylabel("Magnetización")
+ax2.legend()
+ax2.grid()
+
+plt.tight_layout()
+plt.show()
