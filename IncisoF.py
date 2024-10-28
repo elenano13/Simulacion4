@@ -1,3 +1,6 @@
+#Simulación 4
+#Elena Rodríguez 21774 Javier Rucal 21779 Diego De Florán 21565
+
 import numpy as np 
 import matplotlib.pyplot as plt 
 import numba 
